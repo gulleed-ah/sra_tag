@@ -34,7 +34,7 @@ module.exports = {
           },
         },
         fade: {
-          "0%, 100%": { opacity: "0.3" },
+          "0%, 100%": { opacity: "0.1" },
           "50%": { opacity: "1" },
         },
       },
