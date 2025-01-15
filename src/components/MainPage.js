@@ -10,79 +10,7 @@ const MainPage = () => {
   const videoRef = useRef(null);
 
   const handleCameraRequest = () => {
-    const aframeHTML = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-          <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-          <script>
-            AFRAME.registerComponent('rotate', {
-              tick: function () {
-                this.el.object3D.rotation.y += 0.01;
-              }
-            });
-          </script>
-          <style>
-            .message {
-              position: fixed;
-              top: 20px;
-              left: 50%;
-              transform: translateX(-50%);
-              z-index: 9999;
-              color: white;
-              font-family: system-ui, -apple-system, sans-serif;
-              font-weight: 500;
-              font-size: 3em;
-              animation: fade 3s ease-in-out infinite;
-              text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            }
-
-            /* Mobile devices */
-            @media (max-width: 768px) {
-              .message {
-                font-size: 1.5em;
-                top: 15px;
-                white-space: nowrap;
-              }
-            }
-
-            @keyframes fade {
-              0%, 100% { opacity: 0.3; }
-              50% { opacity: 1; }
-            }
-          </style>
-        </head>
-        <body style="margin: 0">
-          <div class="message">Tap your tag to connect</div>
-          <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
-            <!-- Rotating blue cube -->
-            <a-box 
-              position="0 0 -3" 
-              width="1" 
-              height="1" 
-              depth="1"
-              color="#3b82f6"
-              material="opacity: 0.9; metalness: 0.5; roughness: 0.5"
-              rotate
-            ></a-box>
-            
-            <!-- Camera -->
-            <a-entity camera></a-entity>
-          </a-scene>
-        </body>
-      </html>
-    `;
-
-    // Create a blob from the HTML
-    const blob = new Blob([aframeHTML], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-
-    // Open in new tab
-    window.open(url, '_blank');
-
-    // Clean up the URL object
-    setTimeout(() => URL.revokeObjectURL(url), 100);
+    window.open('/SpatialAR.html', '_blank');
   };
 
   const handleCloseCamera = () => {
@@ -124,7 +52,7 @@ const MainPage = () => {
             alt="SR A"
             className="w-12 h-auto mt-8 mb-4 mx-auto"
           />
-          <p className="text-gray-800 font-medium animate-fade mb-12">
+          <p className="text-gray-800 font-medium animate-fade mb-12 text-lg">
             Tap your tag to connect
           </p>
         </div>

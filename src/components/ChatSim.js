@@ -19,7 +19,7 @@ const ChatSim = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setMessages([{
-        text: "Hi there, I'm SR_Ai. Ask me anything about your engineered garment, the inspiration behind the collection, and even unlock a new version of your piece.. Just say Unlock A New Version.",
+        text: "Hi there, I'm SR_Ai. Ask me anything about your engineered garment, the inspiration behind the collection, and even unlock a new version of your piece.. Just say Unlock.",
         sender: 'bot'
       }]);
     }, 1000); // Delay for smooth appearance
