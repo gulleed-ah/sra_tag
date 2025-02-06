@@ -1,83 +1,56 @@
-import React, { useMemo, useRef } from "react"
-import { useDimensions } from "../hooks/use-debounced-dimensions"
+import React, { useEffect, useState } from 'react';
 
-const randomInt = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1)) + min
-}
+const AnimatedGradient = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
 
-const AnimatedGradient = ({
-  speed = 1.5,
-  blur = "light",
-}) => {
-  const containerRef = useRef(null)
-  const dimensions = useDimensions(containerRef)
-  
-  const colors = useMemo(() => [
-    "#ffffff", // white
-    "#3b82f6", // blue
-    "#60a5fa", // indigo
-    "#2f76eb", // blue
-  ], []) // Memoize colors array
-
-  // Memoize the random values so they don't change on resize
-  const randomValues = useMemo(() => {
-    return colors.map(() => ({
-      top: Math.random() * 50,
-      left: Math.random() * 50,
-      tx1: Math.random() - 0.5,
-      ty1: Math.random() - 0.5,
-      tx2: Math.random() - 0.5,
-      ty2: Math.random() - 0.5,
-      tx3: Math.random() - 0.5,
-      ty3: Math.random() - 0.5,
-      tx4: Math.random() - 0.5,
-      ty4: Math.random() - 0.5,
-      scale: randomInt(1, 2)
-    }))
-  }, [colors])
-
-  const circleSize = useMemo(
-    () => Math.max(dimensions.width, dimensions.height),
-    [dimensions.width, dimensions.height]
-  )
-
-  const blurClass =
-    blur === "light"
-      ? "blur-2xl"
-      : blur === "medium"
-      ? "blur-3xl"
-      : "blur-[100px]"
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 50);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
-    <div ref={containerRef} className="absolute inset-0 overflow-hidden">
-      <div className={`absolute inset-0 ${blurClass}`}>
-        {colors.map((color, index) => (
-          <svg
-            key={index}
-            className="absolute animate-background-gradient"
-            style={{
-              top: `${randomValues[index].top}%`,
-              left: `${randomValues[index].left}%`,
-              "--background-gradient-speed": `${45 / speed}s`,
-              "--tx-1": randomValues[index].tx1,
-              "--ty-1": randomValues[index].ty1,
-              "--tx-2": randomValues[index].tx2,
-              "--ty-2": randomValues[index].ty2,
-              "--tx-3": randomValues[index].tx3,
-              "--ty-3": randomValues[index].ty3,
-              "--tx-4": randomValues[index].tx4,
-              "--ty-4": randomValues[index].ty4,
-            }}
-            width={circleSize * randomValues[index].scale}
-            height={circleSize * randomValues[index].scale}
-            viewBox="0 0 100 100"
-          >
-            <circle cx="50" cy="50" r="60" fill={color} />
-          </svg>
-        ))}
-      </div>
-    </div>
-  )
-}
+    <div 
+      className={`
+        fixed inset-0 
+        w-full 
+        h-screen 
+        overflow-hidden
+        ${isLoaded ? 'opacity-100' : 'opacity-0'}
+        transition-opacity duration-500
+      `}
+    >
+      <div 
+        className="absolute inset-0 bg-gradient-to-r from-blue-400 via-blue-600 to-blue-900 animate-gradient"
+        style={{
+          backgroundSize: '200% 200%',
+          transform: 'translate3d(0, 0, 0)',
+          backfaceVisibility: 'hidden',
+          perspective: 1000,
+          willChange: 'background-position'
+        }}
+      />
+      
+      <style jsx>{`
+        @keyframes gradient {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        
+        .animate-gradient {
+          animation: gradient 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
 
-export default AnimatedGradient
+        @media (prefers-reduced-motion: no-preference) {
+          .animate-gradient {
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+          }
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default AnimatedGradient;
